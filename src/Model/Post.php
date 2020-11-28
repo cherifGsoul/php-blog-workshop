@@ -60,6 +60,16 @@ class Post
 		$this->status = 'publish';
 	}
 
+	public function changeTitle(string $title)
+	{
+		$this->setTitle($title);
+	}
+
+	public function editBody(string $body)
+	{
+		$this->setBody($body);
+	}
+
 	private function setId($id)
 	{
 		$this->id = $id;
