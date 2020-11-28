@@ -2,6 +2,7 @@
 
 namespace Blog\Model;
 
+use DomainException;
 use InvalidArgumentException;
 
 class Post
@@ -41,6 +42,22 @@ class Post
 	public function isDraft(): bool
 	{
 		return $this->status === 'draft';
+	}
+
+	public function markAsDraft()
+	{
+		if ($this->isDraft()) {
+			throw new DomainException('Can not draft a drafted post');
+		}
+		$this->status = 'draft';
+	}
+
+	public function markAsPublish()
+	{
+		if ($this->isPublished()) {
+			throw new DomainException('Can not publish a published post');
+		}
+		$this->status = 'publish';
 	}
 
 	private function setId($id)
