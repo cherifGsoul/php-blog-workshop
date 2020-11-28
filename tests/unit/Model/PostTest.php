@@ -103,5 +103,26 @@ class PostTest extends TestCase
 		$post->markAspublish();
 	}
 
+	public function testChangeTitle()
+	{
+		$title = 'PHP App from Scratch';
+		$body = 'The body of the blog post';
+		$tags = ['php', 'db', 'code'];
+		$author = 'cherif';
+		$post = Post::publish($title, $body, $tags, $author);
+		$post->changeTitle('Another changed title');
+		$this->assertEquals('Another changed title', $post->getTitle());
+	}
+
+	public function testEditBody()
+	{
+		$title = 'PHP App from Scratch';
+		$body = 'The body of the blog post';
+		$tags = ['php', 'db', 'code'];
+		$author = 'cherif';
+		$post = Post::publish($title, $body, $tags, $author);
+		$post->editBody('The edited body here');
+		$this->assertEquals('The edited body here', $post->getBody());
+	}
 
 }
