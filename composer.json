@@ -1,0 +1,30 @@
+{
+    "name": "cherif/blog",
+    "authors": [
+        {
+            "name": "Cherif BOUCHELAGHEM",
+            "email": "cherif.bouchelaghem@gmail.com"
+        }
+    ],
+    "autoload": {
+        "psr-4": {
+            "Blog\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "BlogTest\\Unit\\": "tests/unit/"
+        }
+    },
+    "require": {
+        "php": ">=7.2"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "^9.4"
+    },
+    "scripts": {
+        "phpunit": "./vendor/bin/phpunit",
+        "unit": "./vendor/bin/phpunit --testsuite unit",
+        "integration": "./vendor/bin/phpunit --testsuite integration"
+    }
+}

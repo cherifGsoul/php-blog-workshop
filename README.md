@@ -1,0 +1,1 @@
+# PHP from scratch blog application example
