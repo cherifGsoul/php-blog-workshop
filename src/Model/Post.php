@@ -81,6 +81,29 @@ class Post
 		return $this->author === $author;
 	}
 
+	public function addTag(string $tag)
+	{
+		if (count($this->tags) === 4) {
+			throw new DomainException('Blog post can not have more than 4 tags');
+		}
+
+		if (false === $this->hasTag($tag)) {
+			$this->tags[] = $tag;
+		}
+	}
+
+	public function hasTag(string $tag): bool
+	{
+		return in_array($tag, $this->tags);
+	}
+
+	public function removeTag(string $tag)
+	{
+		if ($this->hasTag($tag)) {
+			unset($this->tags[$tag]);
+		}
+	}
+
 	private function setId($id)
 	{
 		$this->id = $id;
