@@ -110,7 +110,7 @@ class PostTest extends TestCase
 		$tags = ['php', 'db', 'code'];
 		$author = 'cherif';
 		$post = Post::publish($title, $body, $tags, $author);
-		$post->changeTitle('Another changed title');
+		$post->changeTitle('Another changed title', 'cherif');
 		$this->assertEquals('Another changed title', $post->getTitle());
 	}
 
@@ -121,8 +121,40 @@ class PostTest extends TestCase
 		$tags = ['php', 'db', 'code'];
 		$author = 'cherif';
 		$post = Post::publish($title, $body, $tags, $author);
-		$post->editBody('The edited body here');
+		$post->editBody('The edited body here', 'cherif');
 		$this->assertEquals('The edited body here', $post->getBody());
+	}
+
+	public function testOnlyPostAuthorCanChangeTheTitle()
+	{
+		$this->expectException(DomainException::class);
+		$title = 'PHP App from Scratch';
+		$body = 'The body of the blog post';
+		$tags = ['php', 'db', 'code'];
+		$author = 'cherif';
+		$post = Post::publish($title, $body, $tags, $author);
+		$post->changeTitle('Another title', 'foo');
+	}
+
+	public function testOnlyPostAuthorCanEditBody()
+	{
+		$this->expectException(DomainException::class);
+		$title = 'PHP App from Scratch';
+		$body = 'The body of the blog post';
+		$tags = ['php', 'db', 'code'];
+		$author = 'cherif';
+		$post = Post::publish($title, $body, $tags, $author);
+		$post->editBody('Foo bar baz', 'foo');
+	}
+
+	public function testIsWrittenByReturnsTrueForTheSameAuthor()
+	{
+		$title = 'PHP App from Scratch';
+		$body = 'The body of the blog post';
+		$tags = ['php', 'db', 'code'];
+		$author = 'cherif';
+		$post = Post::publish($title, $body, $tags, $author);
+		$this->assertTrue($post->isWrittentBy('cherif'));
 	}
 
 }

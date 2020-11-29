@@ -60,14 +60,25 @@ class Post
 		$this->status = 'publish';
 	}
 
-	public function changeTitle(string $title)
+	public function changeTitle(string $title, string $author)
 	{
+		if (false === $this->isWrittentBy($author)) {
+			throw new DomainException('Only blog post author can change the post title');
+		}
 		$this->setTitle($title);
 	}
 
-	public function editBody(string $body)
+	public function editBody(string $body, string $author)
 	{
+		if (false === $this->isWrittentBy($author)) {
+			throw new DomainException('Only blog post author can edit the post body');
+		}
 		$this->setBody($body);
+	}
+	
+	public function isWrittentBy(string $author): bool
+	{
+		return $this->author === $author;
 	}
 
 	private function setId($id)
