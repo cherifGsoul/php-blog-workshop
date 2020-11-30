@@ -157,4 +157,38 @@ class PostTest extends TestCase
 		$this->assertTrue($post->isWrittentBy('cherif'));
 	}
 
+
+	public function testAddTag()
+	{
+		$title = 'PHP App from Scratch';
+		$body = 'The body of the blog post';
+		$tags = ['php'];
+		$author = 'cherif';
+		$post = Post::publish($title, $body, $tags, $author);
+		$post->addTag('programming');
+		$this->assertTrue($post->hasTag('programming'));
+	}
+
+	public function testThrowsWhenTryingToAddMoreThan4Tags()
+	{
+		$this->expectException(DomainException::class);
+		$title = 'PHP App from Scratch';
+		$body = 'The body of the blog post';
+		$tags = ['php', 'db', 'code', 'TDD'];
+		$author = 'cherif';
+		$post = Post::publish($title, $body, $tags, $author);
+		$post->addTag('programming');
+	}
+
+	public function testRemoveTag()
+	{
+		$title = 'PHP App from Scratch';
+		$body = 'The body of the blog post';
+		$tags = ['php'];
+		$author = 'cherif';
+		$post = Post::publish($title, $body, $tags, $author);
+		$post->removeTag('programming');
+		$this->assertFalse($post->hasTag('programming'));
+	}
+
 }
