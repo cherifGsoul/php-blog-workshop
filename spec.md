@@ -8,8 +8,8 @@
 - Edit the blog post body
 - Add tag
 - Remove tag
-- Keep track of the drafting date
-- Keep track of the publishing date
+- Keep track of the creation date
+- Keep track of the updating date
 
 ## Rules:
 - Blog post can not have more than 4 tags
@@ -18,3 +18,8 @@
 - Title length must not be more than 250 characters
 - Body must not be empty
 - Tags can be empty list
+
+# Author Specs:
+- First and last name
+- Biography
+- Edit his biography

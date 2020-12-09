@@ -2,6 +2,8 @@
 
 namespace Blog\Model;
 
+use DateTimeImmutable;
+use DateTimeZone;
 use DomainException;
 use InvalidArgumentException;
 
@@ -12,8 +14,11 @@ class Post
 	private string $body;
 	private array $tags;
 	private string $status;
+	private Author $author;
+	private DateTimeImmutable $createdAt;
+	private DateTimeImmutable $updatedAt;
 
-	private function __construct(string $title, string $body, array $tags = [], string $author, string $status)
+	private function __construct(string $title, string $body, array $tags = [], Author $author, string $status)
 	{
 		$this->setTitle($title);
 		$this->setBody($body);
@@ -21,16 +26,18 @@ class Post
 		$this->author = $author;
 		$this->status = $status;
 	}
-
-	public static function publish(string $title, string $body, array $tags = [], string $author): Post
+	
+	public static function publish(string $title, string $body, array $tags = [], Author $author): Post
 	{
 		$post = new Post($title, $body, $tags, $author, 'publish');
+		$post->setCreatedAt();
 		return $post;
 	}
 
-	public static function draft(string $title, string $body, array $tags = [], string $author): Post
+	public static function draft(string $title, string $body, array $tags = [], Author $author): Post
 	{
 		$post = new Post($title, $body, $tags, $author, 'draft');
+		$post->setCreatedAt();
 		return $post;
 	}
 
@@ -50,6 +57,7 @@ class Post
 			throw new DomainException('Can not draft a drafted post');
 		}
 		$this->status = 'draft';
+		$this->setUpdatedAt();
 	}
 
 	public function markAsPublish()
@@ -58,27 +66,30 @@ class Post
 			throw new DomainException('Can not publish a published post');
 		}
 		$this->status = 'publish';
+		$this->setUpdatedAt();
 	}
 
-	public function changeTitle(string $title, string $author)
+	public function changeTitle(string $title, Author $author)
 	{
 		if (false === $this->isWrittentBy($author)) {
 			throw new DomainException('Only blog post author can change the post title');
 		}
 		$this->setTitle($title);
+		$this->setUpdatedAt();
 	}
 
-	public function editBody(string $body, string $author)
+	public function editBody(string $body, Author $author)
 	{
 		if (false === $this->isWrittentBy($author)) {
 			throw new DomainException('Only blog post author can edit the post body');
 		}
 		$this->setBody($body);
+		$this->setUpdatedAt();
 	}
 	
-	public function isWrittentBy(string $author): bool
+	public function isWrittentBy(Author $author): bool
 	{
-		return $this->author === $author;
+		return $this->author->equals($author);
 	}
 
 	public function addTag(string $tag)
@@ -89,6 +100,7 @@ class Post
 
 		if (false === $this->hasTag($tag)) {
 			$this->tags[] = $tag;
+			$this->setUpdatedAt();
 		}
 	}
 
@@ -101,6 +113,7 @@ class Post
 	{
 		if ($this->hasTag($tag)) {
 			unset($this->tags[$tag]);
+			$this->setUpdatedAt();
 		}
 	}
 
@@ -153,5 +166,25 @@ class Post
 	public function getTags()
 	{
 		return $this->tags;
+	}
+
+	public function getCreatedAt()
+	{
+		return $this->createdAt;
+	}
+
+	private function setCreatedAt()
+	{
+		$this->createdAt = new DateTimeImmutable("now", new DateTimeZone('Africa/Algiers'));
+	}
+
+	public function getUpdatedAt()
+	{
+		return $this->updatedAt;
+	}
+
+	private function setUpdatedAt()
+	{
+		$this->updatedAt = new DateTimeImmutable("now", new DateTimeZone('Africa/Algiers'));
 	}
 }
