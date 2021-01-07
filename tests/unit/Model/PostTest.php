@@ -201,7 +201,8 @@ class PostTest extends TestCase
 		$author = Author::named('cherif', 'bouchelaghem');
 		$post = Post::publish($title, $body, $tags, $author);
 		$this->assertInstanceOf(DateTimeImmutable::class, $post->getCreatedAt());
-		$this->assertEquals('09/12/2020', $post->getCreatedAt()->format('d/m/Y'));
+		$today = (new \DateTime())->format('d/m/Y');
+		$this->assertEquals($today, $post->getCreatedAt()->format('d/m/Y'));
 	}
 
 	public function testSetCreatedAtOnIntialDrafting()
@@ -212,7 +213,8 @@ class PostTest extends TestCase
 		$author = Author::named('cherif', 'bouchelaghem');
 		$post = Post::draft($title, $body, $tags, $author);
 		$this->assertInstanceOf(DateTimeImmutable::class, $post->getCreatedAt());
-		$this->assertEquals('09/12/2020', $post->getCreatedAt()->format('d/m/Y'));
+        $today = (new \DateTime())->format('d/m/Y');
+		$this->assertEquals($today, $post->getCreatedAt()->format('d/m/Y'));
 	}
 
 	public function testSetUpdatedMarkAsDraft()
