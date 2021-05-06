@@ -100,7 +100,7 @@ class Post
 	public function removeTag(string $tag)
 	{
 		if ($this->hasTag($tag)) {
-			unset($this->tags[$tag]);
+			unset($this->tags[array_search($tag, $this->tags)]);
 		}
 	}
 

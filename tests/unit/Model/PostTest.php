@@ -184,7 +184,7 @@ class PostTest extends TestCase
 	{
 		$title = 'PHP App from Scratch';
 		$body = 'The body of the blog post';
-		$tags = ['php'];
+		$tags = ['php','programming'];
 		$author = 'cherif';
 		$post = Post::publish($title, $body, $tags, $author);
 		$post->removeTag('programming');
